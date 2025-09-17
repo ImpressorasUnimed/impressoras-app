@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>IMPRESSORAS SEDE</title>
+  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/4280/4280643.png" type="image/png" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+:root {
+      --verde: #2ecc71;
+      --verde-citrico: #a1e85f;
+      --laranja: #e67e22;
+      --verde-escuro: #145a32;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      padding: 40px 20px;
+      background: url('https://i.imgur.com/RHqmpm4.jpeg') no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      position: relative;
+    }
+    body::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.35);
+      pointer-events: none;
+    }
+    .container {
+      position: relative;
+      background: #ffffff;
+      color: var(--verde-escuro);
+      border-radius: 12px;
+      max-width: 480px;
+      width: 100%;
+      padding: 30px 40px;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+    .container:focus-within {
+      transform: scale(1.02);
+    }
+    .logo {
+      width: 100px;
+      height: auto;
+      margin-bottom: 20px;
+    }
+    h2 {
+      color: var(--verde-escuro);
+      margin-bottom: 24px;
+      font-weight: 700;
+      font-size: 2.4rem;
+      letter-spacing: 1.2px;
+    }
+    label {
+      display: block;
+      text-align: left;
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin-bottom: 8px;
+      color: var(--verde-escuro);
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 15px;
+      font-size: 1.1rem;
+      border-radius: 8px;
+      border: 2px solid var(--verde);
+      color: var(--verde-escuro);
+      font-weight: 500;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      outline: none;
+    }
+    input[type="text"]:focus {
+      border-color: var(--laranja);
+      box-shadow: 0 0 12px var(--laranja);
+    }
+    button {
+      margin-top: 20px;
+      background: var(--verde);
+      border: none;
+      padding: 14px 28px;
+      color: white;
+      font-weight: 700;
+      font-size: 1.1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 6px 15px rgba(46, 204, 113, 0.6);
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      width: 100%;
+    }
+    button:hover {
+      background-color: var(--laranja);
+      transform: scale(1.05);
+    }
+    button:active {
+      transform: scale(0.98);
+    }
+    #resultado {
+      margin-top: 28px;
+      background: #f0fff0;
+      border-radius: 10px;
+      padding: 20px;
+      color: var(--verde-escuro);
+      min-height: 120px;
+      font-size: 1.1rem;
+      text-align: left;
+      box-shadow: 0 4px 12px rgba(22, 160, 133, 0.2);
+      position: relative;
+      opacity: 0;
+      transform: translateY(20px);
+      animation-fill-mode: forwards;
+    }
+    #resultado.visivel {
+      animation: fadeInUp 0.5s ease forwards;
+    }
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .erro {
+      color: #c0392b;
+      font-weight: 700;
+      font-size: 1.1rem;
+      text-align: center;
+    }
+    #resultado::before {
+      content: "";
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 40px;
+      height: 40px;
+      background-image: url('https://cdn-icons-png.flaticon.com/512/4280/4280643.png');
+      background-size: contain;
+      background-repeat: no-repeat;
+      opacity: 0.2;
+      pointer-events: none;
+    }
+    @media (max-width: 520px) {
+      body {
+        padding: 20px 10px;
+      }
+      .container {
+        padding: 25px 20px;
+        max-width: 100%;
+      }
+      h2 {
+        font-size: 2rem;
+      }
+      input[type="text"],
+      button {
+        font-size: 1rem;
+        padding: 12px 20px;
+      }
+      #resultado {
+        font-size: 1rem;
+        min-height: 100px;
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" tabindex="0">
+    <img src="https://i.imgur.com/7EzceCl.jpeg" alt="Logo" class="logo" />
+    <h2>IMPRESSORAS SEDE</h2>
+    <label for="codigo">Digite o código, IP ou setor da impressora:</label>
+    <input type="text" id="codigo" placeholder="Ex: H-773, 172.16.30.15, PROVIMENTO" autocomplete="off" />
+    <button onclick="consultar()">Consultar</button>
+    <div id="resultado"></div>
+  </div>
+  <!-- Botão Admin -->
+  <button
+    id="adminBtn"
+    style="position: fixed; bottom: 20px; right: 20px; z-index: 999; padding: 10px 20px; background: #e67e22; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;"
+  >
+    Modo Admin
+  </button>
+
+  <div
+    id="adminModal"
+    style="display:none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.7); justify-content: center; align-items: center; z-index: 1000;"
+  >
+    <div
+      style="background: white; color: var(--verde-escuro); border-radius: 12px; max-width: 480px; width: 90%; padding: 30px 40px; box-shadow: 0 15px 40px rgba(0,0,0,0.25); position: relative;"
+    >
+      <h2 style="text-align:center; margin-bottom: 24px;">Modo Admin</h2>
+
+      <button onclick="showAddPrinter()" style="width: 100%; margin-bottom: 15px; padding: 12px; font-weight: 700; font-size: 1.1rem; border-radius: 8px; border: none; background: var(--verde); color: white; cursor: pointer;">
+        Adicionar Impressora
+      </button>
+
+      <button onclick="showEditPrinter()" style="width: 100%; margin-bottom: 15px; padding: 12px; font-weight: 700; font-size: 1.1rem; border-radius: 8px; border: none; background: var(--laranja); color: white; cursor: pointer;">
+        Editar Impressora
+      </button>
+
+      <button onclick="showDeletePrinter()" style="width: 100%; margin-bottom: 15px; padding: 12px; font-weight: 700; font-size: 1.1rem; border-radius: 8px; border: none; background: #c0392b; color: white; cursor: pointer;">
+        Apagar Impressora
+      </button>
+
+      <!-- ADIÇÃO: Botão Níveis de Toner -->
+      <button onclick="showTonerLevels()" style="width: 100%; margin-bottom: 15px; padding: 12px; font-weight: 700; font-size: 1.1rem; border-radius: 8px; border: none; background: var(--verde-citrico); color: var(--verde-escuro); cursor: pointer;">
+        Níveis de Toner
+      </button>
+
+      <button onclick="closeAdminModal()" style="width: 100%; padding: 12px; font-weight: 700; font-size: 1.1rem; border-radius: 8px; border: none; background: #555; color: white; cursor: pointer;">
+        Fechar
+      </button>
+
+      <div id="adminContent" style="margin-top: 20px; text-align: left;"></div>
+    </div>
+  </div>
+<script>
+    async function consultar() {
+      const input = document.getElementById("codigo").value.trim().toUpperCase();
+      const resultado = document.getElementById("resultado");
+
+      if (!input) {
+        resultado.innerHTML = "<p class='erro'>Por favor, digite um valor para buscar.</p>";
+        resultado.classList.add("visivel");
+        return;
+      }
+
+      const res = await fetch('/api/impressoras');
+      const impressoras = await res.json();
+
+      const resultados = impressoras.filter(p =>
+        p.id.includes(input) || p.setor.includes(input) || p.ip.includes(input)
+      );
+
+      if (resultados.length > 0) {
+        resultado.innerHTML = resultados.map(p => {
+          const ipHTML = p.ip.includes(".") && p.ip !== "SEM IP"
+            ? `<a href="http://${p.ip}" target="_blank">${p.ip}</a>` : p.ip;
+          return `<p><strong>📝 Código:</strong> ${p.id}</p>
+                  <p><strong>🏬 Setor:</strong> ${p.setor}</p>
+                  <p><strong>📍 IP:</strong> ${ipHTML}</p>
+                  <p><strong>🖨️ Modelo Toner:</strong> ${p.modelo}</p>
+                  <hr />`;
+        }).join("");
+      } else {
+        resultado.innerHTML = `<p class="erro">Nenhum resultado encontrado para: ${input}</p>`;
+      }
+
+      resultado.classList.remove("visivel");
+      void resultado.offsetWidth;
+      resultado.classList.add("visivel");
+    }
+
+    // Funções do modo Admin adaptadas para API
+    async function addPrinter() {
+      const nova = {
+        id: document.getElementById("addCodigo").value.trim().toUpperCase(),
+        setor: document.getElementById("addSetor").value.trim().toUpperCase(),
+        ip: document.getElementById("addIP").value.trim(),
+        modelo: document.getElementById("addModelo").value.trim()
+      };
+
+      if (!nova.id || !nova.setor || !nova.ip || !nova.modelo) {
+        alert("Preencha todos os campos.");
+        return;
+      }
+
+      await fetch('/api/impressoras', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(nova)
+      });
+
+      alert("Impressora adicionada com sucesso!");
+      closeAdminModal();
+    }
+
+    async function deletePrinter() {
+      const codigoDelete = document.getElementById("deleteCodigo").value.trim().toUpperCase();
+
+      if (!confirm(`Tem certeza que deseja apagar a impressora ${codigoDelete}?`)) return;
+
+      await fetch(`/api/impressoras/${codigoDelete}`, { method: 'DELETE' });
+
+      alert("Impressora apagada com sucesso!");
+      closeAdminModal();
+    }
+
+    async function loadPrinterForEdit() {
+      const codigoBusca = document.getElementById("editCodigo").value.trim().toUpperCase();
+      const editForm = document.getElementById("editForm");
+
+      const res = await fetch('/api/impressoras');
+      const impressoras = await res.json();
+      const impressora = impressoras.find(p => p.id === codigoBusca);
+
+      if (!impressora) {
+        editForm.innerHTML = `<p class="erro">Impressora com código ${codigoBusca} não encontrada.</p>`;
+        return;
+      }
+
+      editForm.innerHTML = `
+        <label for="editSetor">Setor:</label>
+        <input type="text" id="editSetor" value="${impressora.setor}" />
+        <label for="editIP">IP:</label>
+        <input type="text" id="editIP" value="${impressora.ip}" />
+        <label for="editModelo">Modelo Toner:</label>
+        <input type="text" id="editModelo" value="${impressora.modelo}" />
+        <button onclick="saveEditedPrinter('${impressora.id}')">Salvar Alterações</button>
+      `;
+    }
+
+    async function saveEditedPrinter(id) {
+      const atualizada = {
+        id,
+        setor: document.getElementById("editSetor").value.trim().toUpperCase(),
+        ip: document.getElementById("editIP").value.trim(),
+        modelo: document.getElementById("editModelo").value.trim()
+      };
+
+      await fetch(`/api/impressoras/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(atualizada)
+      });
+
+      alert("Impressora atualizada com sucesso!");
+      closeAdminModal();
+    }
+
+    document.getElementById("adminBtn").addEventListener("click", () => {
+      document.getElementById("adminModal").style.display = "flex";
+      document.getElementById("adminContent").innerHTML = "";
+    });
+
+    function closeAdminModal() {
+      document.getElementById("adminModal").style.display = "none";
+    }
+
+    function showAddPrinter() {
+      const content = document.getElementById("adminContent");
+      content.innerHTML = `
+        <h3>Adicionar Nova Impressora</h3>
+        <label for="addCodigo">Código:</label>
+        <input type="text" id="addCodigo" placeholder="Ex: H-999" />
+        <label for="addSetor">Setor:</label>
+        <input type="text" id="addSetor" placeholder="Ex: FINANCEIRO" />
+        <label for="addIP">IP:</label>
+        <input type="text" id="addIP" placeholder="Ex: 172.16.30.99" />
+        <label for="addModelo">Modelo Toner:</label>
+        <input type="text" id="addModelo" placeholder="Ex: 4070" />
+        <button onclick="addPrinter()">Adicionar</button>
+      `;
+    }
+
+    function showEditPrinter() {
+      const content = document.getElementById("adminContent");
+      content.innerHTML = `
+        <h3>Editar Impressora</h3>
+        <label for="editCodigo">Digite o código da impressora para editar:</label>
+        <input type="text" id="editCodigo" placeholder="Ex: H-785" />
+        <button onclick="loadPrinterForEdit()">Buscar</button>
+        <div id="editForm" style="margin-top: 15px;"></div>
+      `;
+    }
+
+    function showDeletePrinter() {
+      const content = document.getElementById("adminContent");
+      content.innerHTML = `
+        <h3>Apagar Impressora</h3>
+        <label for="deleteCodigo">Digite o código da impressora para apagar:</label>
+        <input type="text" id="deleteCodigo" placeholder="Ex: H-785" />
+        <button onclick="deletePrinter()">Apagar</button>
+      `;
+    }
+
+    /* ======================= ADIÇÕES: módulo Níveis de Toner ======================= */
+    function showTonerLevels() {
+      const content = document.getElementById("adminContent");
+      content.innerHTML = `
+        <h3>Níveis de Toner</h3>
+        <p>Buscando informações nas páginas das impressoras (pode depender de CORS e autenticação)...</p>
+        <div id="tonerWrapper" style="overflow:auto; max-height:60vh; border:1px solid #eee; border-radius:8px;">
+          <table style="width:100%; border-collapse:collapse;">
+            <thead>
+              <tr>
+                <th style="text-align:left; padding:8px; border-bottom:1px solid #ddd;">Código</th>
+                <th style="text-align:left; padding:8px; border-bottom:1px solid #ddd;">Setor</th>
+                <th style="text-align:left; padding:8px; border-bottom:1px solid #ddd;">IP</th>
+                <th style="text-align:left; padding:8px; border-bottom:1px solid #ddd;">Toners (%)</th>
+              </tr>
+            </thead>
+            <tbody id="tonerBody">
+              <tr><td colspan="4" style="padding:10px;">Carregando...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      `;
+
+      const tbody = () => document.getElementById("tonerBody");
+
+      const tasks = impressoras.map(item => {
+        const [codigo, setor, ip, modelo] = item.split("|");
+        const validIP = ip && ip !== "SEM IP" && ip.includes(".");
+        if (!validIP) {
+          return Promise.resolve(rowHTML(codigo, setor, ip, "Sem IP"));
+        }
+
+        return fetch(`http://${ip}`)
+          .then(r => r.text())
+          .then(html => {
+            const percents = extractPercents(html);
+            const result = percents.length ? percents.join(", ") : "Não encontrado";
+            return rowHTML(codigo, setor, `<a href="http://${ip}" target="_blank">${ip}</a>`, result);
+          })
+          .catch(() => rowHTML(codigo, setor, `<a href="http://${ip}" target="_blank">${ip}</a>`, "Sem acesso (CORS/offline)"));
+      });
+
+      Promise.all(tasks).then(rows => {
+        tbody().innerHTML = rows.join("");
+      });
+
+      function rowHTML(codigo, setor, ipCell, tonerText) {
+        return `
+          <tr>
+            <td style="padding:8px; border-bottom:1px solid #f0f0f0;">${codigo}</td>
+            <td style="padding:8px; border-bottom:1px solid #f0f0f0;">${setor}</td>
+            <td style="padding:8px; border-bottom:1px solid #f0f0f0;">${ipCell}</td>
+            <td style="padding:8px; border-bottom:1px solid #f0f0f0;">${tonerText}</td>
+          </tr>
+        `;
+      }
+
+      function extractPercents(html) {
+        // captura 0-100% e evita números inválidos
+        const m = html.match(/\b\d{1,3}%\b/g) || [];
+        const uniq = Array.from(new Set(m));
+        return uniq.filter(p => {
+          const n = parseInt(p, 10);
+          return n >= 0 && n <= 100;
+        });
+      }
+    }
+    /* ===================== FIM ADIÇÕES: módulo Níveis de Toner ===================== */
+  </script>
+</body>
+</html>
