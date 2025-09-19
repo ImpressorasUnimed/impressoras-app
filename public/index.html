@@ -224,6 +224,16 @@
     </div>
   </div>
 <script>
+    
+  window.addEventListener("DOMContentLoaded", () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const codigo = urlParams.get("codigo");
+    if (codigo) {
+      document.getElementById("codigo").value = codigo;
+      consultar(); // dispara a busca automaticamente
+    }
+  });
+
     async function consultar() {
       const input = document.getElementById("codigo").value.trim().toUpperCase();
       const resultado = document.getElementById("resultado");
