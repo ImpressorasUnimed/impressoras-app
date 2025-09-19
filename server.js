@@ -1,10 +1,11 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
 const app = express();
 
 // 🌐 Conexão com MongoDB Atlas
-mongoose.connect('mongodb+srv://unimedimpressoras:Unimed%21%40%23065@impressoras.oal78tm.mongodb.net/?retryWrites=true&w=majority&appName=Impressoras', {
+mongoose.connect(process.env.MONGO_URI, {
 }).then(() => {
   console.log("🟢 Conectado ao MongoDB Atlas");
 }).catch(err => {
