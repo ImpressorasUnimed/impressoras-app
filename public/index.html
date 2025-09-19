@@ -6,12 +6,12 @@
   <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/4280/4280643.png" type="image/png" />
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
   <style>
-:root {
-      --verde: #2ecc71;
-      --verde-citrico: #a1e85f;
-      --laranja: #e67e22;
-      --verde-escuro: #145a32;
-    }
+    :root {
+          --verde: #2ecc71;
+          --verde-citrico: #a1e85f;
+          --laranja: #e67e22;
+          --verde-escuro: #145a32;
+        }
     * {
       box-sizing: border-box;
     }
@@ -233,7 +233,7 @@
         resultado.classList.add("visivel");
         return;
       }
-
+      
       const res = await fetch('/api/impressoras');
       const impressoras = await res.json();
 
@@ -409,7 +409,7 @@
       const tbody = () => document.getElementById("tonerBody");
 
       const tasks = impressoras.map(item => {
-        const [codigo, setor, ip, modelo] = item.split("|");
+        const { id: codigo, setor, ip, modelo } = item;
         const validIP = ip && ip !== "SEM IP" && ip.includes(".");
         if (!validIP) {
           return Promise.resolve(rowHTML(codigo, setor, ip, "Sem IP"));
